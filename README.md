@@ -1,4 +1,4 @@
-# Jenny's vehicle-generator
+# Jenny's Vehicle-Generator
 
 ## Description
 The Vehicle Generator is a command-line application built in JavaScript that allows users to create and interact with different types of vehicles: trucks, motorbikes, and cars. Each vehicle type has unique capabilities. The application prompts users to input details about the vehicles and enforces limitations based on the vehicle type. This tool runs entirely in the integrated terminal of Visual Studio Code without requiring any additional extensions or applications.
