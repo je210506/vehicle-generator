@@ -4,7 +4,6 @@ import Truck from "./Truck.js";
 import Car from "./Car.js";
 import Motorbike from "./Motorbike.js";
 import Wheel from "./Wheel.js";
-import { error } from "console";
 
 // define the Cli class
 class Cli {
@@ -63,19 +62,19 @@ class Cli {
           message: 'Select a vehicle type',
           // TODO: Update the choices array to include Truck and Motorbike
           // TODO: add statements to create a truck or motorbike if the user selects the respective vehicle type
-          choices: ['Car', 'Motorbike', 'Truck'],
+          choices: ['Car', 'Truck', 'Motorbike'],
         },
       ])
       .then((answers) => {
         if (answers.vehicleType === 'Car') {
           // create a car
           this.createCar();
-        } else if (answers.vehicleType === 'Motorbike') {
-          //create the motorbike
-          this.createMotorbike();
         } else if (answers.vehicleType === 'Truck') {
-          //create the truck, yes indeed :)
+          //create the motorbike
           this.createTruck();
+        } else if (answers.vehicleType === 'Motorbike') {
+          //create the truck, yes indeed :)
+          this.createMotorbike();
         }
       });
   }
@@ -116,9 +115,11 @@ class Cli {
         },
       ])
       .then((answers) => {
-        const car = new Car(
+        let vehicle: Car | Truck | Motorbike;
+        const vin = Cli.generateVin();
+        vehicle = new Car(
           // TODO: The generateVin method is static and should be called using the class name Cli, make sure to use Cli.generateVin() for creating a truck and motorbike as well!
-          Cli.generateVin(),
+          vin,
           answers.color,
           answers.make,
           answers.model,
@@ -128,9 +129,9 @@ class Cli {
           []
         );
         // push the car to the vehicles array
-        this.vehicles.push(car);
+        this.vehicles.push(vehicle);
         // set the selectedVehicleVin to the vin of the car
-        this.selectedVehicleVin = car.vin;
+        this.selectedVehicleVin = vehicle.vin;
         // perform actions on the car
         this.performActions();
       });
@@ -187,7 +188,7 @@ class Cli {
           parseInt(answers.weight),
           parseInt(answers.topSpeed),
           [],
-          parseInt(answers.towingCapacity),
+          parseInt(answers.towingCapacity)
         );
         this.vehicles.push(vehicle);
         // set the selectedVehicleVin to the vin of the car
@@ -304,8 +305,9 @@ class Cli {
         },
       ])
       .then((answers) => {
-        const vehicle = answers.vehiclesToTow;
-        console.log(`Towing vehicle: ${vehicle.make} ${vehicle.model} (VIN: ${vehicle.vin}, Weight: ${vehicle.weight})`);
+        const vehicle = answers.vehicleToTow;
+        console.log(
+          `Towing vehicle: ${vehicle.make} ${vehicle.model} (VIN: ${vehicle.vin}, Weight: ${vehicle.weight})`);
         this.towVehicle(vehicle);
       })
       .catch((error) => {
@@ -313,7 +315,7 @@ class Cli {
       });
     }
 
-    towVehicle(vehicle: Car | Motorbike | Truck): void {
+    towVehicle(vehicle: Car | Truck | Motorbike): void {
       console.log(`Vehicle with VIN ${vehicle.vin} and weight ${vehicle.weight} is being towed!`);
     }
       
